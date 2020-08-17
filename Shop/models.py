@@ -1,17 +1,15 @@
 from django.db import models
 import uuid
 
-from filters.models import ProductFilter
-
 
 class PageModel(models.Model):
 
     class Meta:
         abstract = True
 
-    seo_title = models.CharField(max_length=255)
-    seo_description = models.CharField(max_length=255)
-    text = models.TextField(null=True)
+    seo_title = models.CharField(max_length=255, null=True, blank=True)
+    seo_description = models.CharField(max_length=255, null=True, blank=True)
+    text = models.TextField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -36,10 +34,9 @@ class Catalog(PageModel):
         blank=str
     )
     image = models.FileField(upload_to='catalog/%Y/%m/%d/')
-    product_filter = models.ManyToManyField(
-        ProductFilter,
-        related_name='catalog',
-    )
+
+    def __str__(self):
+        return self.name
 
 
 class Product(PageModel):
@@ -59,22 +56,9 @@ class Product(PageModel):
         on_delete=models.SET_NULL,
         null=True,
     )
-
-
-class ProductVariable(models.Model):
-    class Meta:
-        verbose_name = 'Product variable'
-        verbose_name_plural = 'product variables'
-
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False
-    )
-    var_name = models.CharField(max_length=255)
-    var_value = models.CharField(max_length=255)
+    properties = models.JSONField(null=True, blank=True)
+    options = models.JSONField(null=True, blank=True)
     price = models.DecimalField(max_digits=8, decimal_places=2)
-    product = models.ForeignKey(
-        Product,
-        on_delete=models.CASCADE
-    )
+
+    def __str__(self):
+        return f'{self.name} - {self.catalog.name}'

@@ -40,11 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'debug_toolbar',
+    'django_json_widget',
 
     'Shop',
     'user_profile',
     'basket',
-    'filters'
+    'services',
 ]
 
 MIDDLEWARE = [
@@ -84,8 +85,12 @@ WSGI_APPLICATION = 'my_shop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'shop',
+        'USER': 'spik',
+        'PASSWORD': '31128696',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 

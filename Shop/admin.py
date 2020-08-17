@@ -1,7 +1,7 @@
 from django.contrib import admin
-
+from django_json_widget.widgets import JSONEditorWidget
+from django.db.models import JSONField
 from Shop.models import (
-    ProductVariable,
     Product,
     Catalog,
 )
@@ -12,11 +12,9 @@ class CatalogAdmin(admin.ModelAdmin):
     pass
 
 
-class ProductVariableStackInline(admin.StackedInline):
-    model = ProductVariable
-
-
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
 
-    inlines = (ProductVariableStackInline, )
+    formfield_overrides = {
+        JSONField: {'widget': JSONEditorWidget},
+    }

@@ -31,5 +31,5 @@ class CardPosition(models.Model):
 
     @property
     def price(self):
-        return self.product.variables.price * self.count
+        return self.product.price * self.count
 
